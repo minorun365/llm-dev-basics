@@ -81,10 +81,13 @@ faiss.normalize_L2(query_embedding)
 
 # コサイン類似度で検索（上位1件を取得）
 similarities, indices = index.search(query_embedding, 1)
+
 retrieved_docs = []
 for i, (sim, idx) in enumerate(zip(similarities[0], indices[0])):
     doc = documents[idx]
     retrieved_docs.append(doc)
+
+context = retrieved_docs[0]['content']
 
 print("【検索結果】")
 print("クエリ： ", query)
@@ -92,9 +95,9 @@ print("結果： ", retrieved_docs)
 print()
 
 # ========================================
-# LLMの推論
+# 推論を実行
 # ========================================
-prompt = f"質問： {query} / コンテキスト： {retrieved_docs}"
+prompt = f"質問： {query} / コンテキスト： {context}"
 
 print("【プロンプト】")
 print(prompt)
